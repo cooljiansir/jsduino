@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <style>
+  #widgetListcontainer{ width: 200px; height:100%;border-right: 1px solid;float: left;}
+  #widgetList {width: 100%; height:100%;overflow-x: auto}
+  #widgetList input{width: 100%;border:none}
+  #widgetList ul{padding: 0;border-bottom: 1px #888888 solid;margin: 0}
+  #widgetList li{list-style: none;margin: 0;cursor: default;}
+  #widgetList .bar{background-color: #EEEEEE;
+      background: linear-gradient(#F1F1F1,#DDDDDD);
+      border-bottom:1px #888888 solid; 
+      cursor: default;
+      user-select: none;
+      height: 17px;
+      text-align: center}
+  #inputdiv {width:100%;border: 2px solid;box-sizing:border-box;}
+  html, body{height: 100%; margin: 0;font-family:monospace;font-size: 11pt;}
+  #viewercontainer{width:100%;border-bottom: 1px solid;height: 80%;box-sizing: border-box;}
+  #viewer{width:100%;height:100%;margin-right: 20px;box-sizing: border-box}
+  #viewercontainer iframe{width:100%;height:100%;border:1px solid;box-sizing: border-box}
+  #codeedit{width:100%}
+  #treediv{width:100%;border-bottom: 1px solid;height: 20%;}      
+  #propertydiv{width:100%;}  
+
+  /*#viewer{width: 100%;height:100%;
+    -ms-transform: scale(0.5);
+    -moz-transform: scale(0.5);
+    -o-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5)}*/
+  #rightcenterdiv{box-sizing: border-box;overflow: hidden;height:100%;}
+  #rightdiv{overflow:hidden;height:100%;}
+  #centerdiv{height:100%;border-right: 1px solid; float: left;width: 80%;}
+  </style>
+    <link rel="stylesheet" "text/css" href="jquery-ui.css"/>
+
+</head>
+<body>
+ <div id="widgetListcontainer">
+ <div id="widgetList">
+     <div id="inputdiv"><input value="filter"/></div>
+     <div class="bar">Layouts</div>
+     <ul><li>Vertial Layout</li><li>Horizontal Layout</li><li>Grid Layout</li><li>Form Layout</li></ul>
+     <div class="bar">Spacers</div>
+     <ul><li>Horizontal Spacer</li><li>Vertical Spacer</li></ul>
+     <div class="bar">Buttons</div>
+     <ul><li>Push Button</li><li>Tool Button</li><li>Radio Button</li><li>Check Box</li></ul>
+     <div class="bar">Containers</div>
+     <div class="bar">Input Widgets</div>
+     <div class="bar">Display Widgets</div>
+  </div>
+  </div>
+  <div id="rightcenterdiv">
+      <div id="centerdiv">
+          <div id="viewercontainer">
+              <div id="viewer">
+                <iframe src="test.htm" id="frame"></iframe>
+              </div>
+          </div>
+          <div id="codeedit"></div>
+      </div>
+      <div id="rightdiv">
+          <div id="treediv"></div>
+          <div id="propertydiv"></div>
+      </div>
+  </div>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery-ui.js"></script>
+    <script type="text/javascript">
+        $("#widgetList").attr("onselectstart","return false;");
+        $("#rightcenterdiv").attr("onselectstart","return false;");
+        $("#viewer").attr("onselectstart","return false;");
+        $("#viewer iframe body").contents().find("*").attr("onselectstart","return false;");
+        $("#widgetList .bar").click(function(){
+            if($(this).next("ul").is(":visible")){
+               $(this).next("ul").hide();}
+            else {$(this).next("ul").show();}
+        });
+        //$( "#viewer" ).contents().find( "a" ).css( "background-color", "#BADA55" );
+        $('#widgetListcontainer').resizable({handles: 'e'});
+        $('#centerdiv').resizable({handles: 'e'});
+        $('#viewercontainer').resizable({handles: 's'});
+
+    </script>
+    
+</body>
+</html>			

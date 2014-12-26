@@ -1,0 +1,11 @@
+{box-sizing: border-box}
+body *{cursor: default}
+.btn:hover{cursor: default}
+.addbar{border:1px solid;}
+.active-border{
+    border: 2px red solid !important;
+    box-sizing: border-box !important;
+}
+.bar__after__ div{height:10px;box-sizing: border-box;position:absolute;border:4px blue solid;}
+.bar__before__ div{height:10px;box-sizing: border-box;position:absolute;border:4px blue solid;}
+.active-drop{border:4px red solid !important;}

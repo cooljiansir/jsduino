@@ -4,6 +4,8 @@
     }
     var $dragwho;
     var $isdragging=false;
+    var whoisclosest=null;
+    var direction=1;
     $(function(){
         $('body *').draggable({
             containment: 'document',
@@ -12,9 +14,11 @@
             stop: function(event, ui) {
                 //$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
                 $isdragging = false;
+                $("#active-border").hide();
             },
             start: function(event, ui) {
                 $isdragging = true;
+                $("#active-border").show();
                 $(ui.helper).width($(this).width());
                 $(ui.helper).height($(this).height());
                 //$(ui.helper).droppable("disable");
@@ -22,7 +26,40 @@
                 //$(this).droppable("disable");
                 activeonly($(this));
                 $(ui.helper).addClass("active-border");
-            }
+            },
+            drag:function(event,ui){
+                var offset = ui.offset;
+                var mmin = 1<<28;
+                var $mmine;
+                var up;
+                
+                $(".active-drop").not("div[class^='col-md-']").each(function(){
+                    if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
+                        $("#active-border").offset($(this).offset());
+                        
+                    }else{
+                        var offset2 = $(this).offset();
+                        offset2.top += $(this).outerHeight();
+                        $("#active-border").offset(offset2);
+                    }
+                    $("#active-border").css("height","0");
+                    $("#active-border").css("width",$(this).outerWidth()+"px");
+                    $("#active-border").css("border","4px blue solid");
+                });
+                $(".active-drop").filter("div[class^='col-md-']").each(function(){
+                    if(offset.left<$(this).offset().left+$(this).outerWidth()/2){
+                        $("#active-border").offset($(this).offset());
+                    }else{
+                        var offset2 = $(this).offset();
+                        offset2.left += $(this).outerWidth();
+                        $("#active-border").offset(offset2);
+                    }
+                    $("#active-border").css("width","0");
+                    $("#active-border").css("height",$(this).outerHeight()+"px");
+                    $("#active-border").css("border","4px blue solid");
+                });
+            },
+            cursorAt: { left: 0,top:0 }
         });
         
         $("body *").mouseenter(function(){
@@ -46,38 +83,18 @@
                 $dragwho  = $(this).parent();
             }
         });
-
-        $("body").attr("onselectstart","return false;");
-        $("body *").after("<div class=\"bar__after__\"></div>");
-        $("body *:not(.bar__after__)").before("<div class=\"bar__before__\"></div>");
-        $(".navbar *").remove(".bar__after__");
-        $(".navbar *").remove(".bar__before__");
-        $("[class^='col-md-']").prev().remove(".bar__before__");
-        
-        $(".bar__after__").each(function(){
-            //$(this).append("<div style=\"height:"++"px;width:"+$(this).prev().outerWidth()+"px"+"\"></div>");
-        });
-        $(".bar__before__").each(function(){
-            $(this).append("<div style=\"width:"+$(this).next().outerWidth()+"px"+"\"></div>");
-            
-        });
-        //$(".bar__after__ div").hide();
-        var $times = 0;
-        $(".bar__before__ div").droppable({
-            over:function(){
-                //$(".active-drop").removeClass("active-drop");
+        $("body *").droppable({
+            over:function(event,ui){
+                $(this).addClass("over-drop");
+                $(".active-drop").removeClass("active-drop");
                 $(this).addClass("active-drop");
-                $(this).addClass("over-drop");
             },
-            out:function(){
+            out:function(event,ui){
+                $(this).removeClass("over-drop");
                 $(this).removeClass("active-drop");
-                $(this).addClass("over-drop");
-                $(this).parent().parent().prev().find(".over-drop").addClass("active-drop");
-                //$(this).parent().parent().prev().find(".over-drop").hide();
-                //var $aaa = $(this).parent().parent().prev();//.find(".over-drop").html());
-                //alert($aaa.html());
-                //alert($aaa.find(".over-drop").html());
-            }
+                $(this).parent(".over-drop").addClass("active-drop");
+            },
+            tolerance: "pointer"
         });
     });
     

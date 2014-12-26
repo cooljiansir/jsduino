@@ -2,7 +2,7 @@
         $(".active-border").removeClass("active-border");
         $obj.addClass("active-border");
     }
-    var $dragwho;
+    var $dragwho=null;
     var $isdragging=false;
     var whoisclosest=null;
     var direction=1;
@@ -15,9 +15,20 @@
                 //$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
                 $isdragging = false;
                 $("#active-border").hide();
+                if(whoisclosest!=null){
+                    if(direction==1)
+                        $(whoisclosest).before($($dragwho));
+                    if(direction==2)
+                        $(whoisclosest).after($($dragwho));
+                    if(direction==3)
+                        $(whoisclosest).before($($dragwho));
+                    if(direction==4)
+                        $(whoisclosest).after($($dragwho));
+                }
             },
             start: function(event, ui) {
                 $isdragging = true;
+                $dragwho = $(this);
                 $("#active-border").show();
                 $(ui.helper).width($(this).width());
                 $(ui.helper).height($(this).height());
@@ -30,29 +41,32 @@
             drag:function(event,ui){
                 var offset = ui.offset;
                 var mmin = 1<<28;
-                var $mmine;
-                var up;
-                
+                whoisclosest = null;
                 $(".active-drop").not("div[class^='col-md-']").each(function(){
+                    whoisclosest = $(this);
                     if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
                         $("#active-border").offset($(this).offset());
-                        
+                        direction = 1;
                     }else{
                         var offset2 = $(this).offset();
                         offset2.top += $(this).outerHeight();
                         $("#active-border").offset(offset2);
+                        direction = 2;
                     }
                     $("#active-border").css("height","0");
                     $("#active-border").css("width",$(this).outerWidth()+"px");
                     $("#active-border").css("border","4px blue solid");
                 });
                 $(".active-drop").filter("div[class^='col-md-']").each(function(){
+                    whoisclosest = $(this);
                     if(offset.left<$(this).offset().left+$(this).outerWidth()/2){
                         $("#active-border").offset($(this).offset());
+                        direction = 3;
                     }else{
                         var offset2 = $(this).offset();
                         offset2.left += $(this).outerWidth();
                         $("#active-border").offset(offset2);
+                        direction = 4;
                     }
                     $("#active-border").css("width","0");
                     $("#active-border").css("height",$(this).outerHeight()+"px");

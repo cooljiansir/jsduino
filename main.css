@@ -8,5 +8,5 @@ body *{cursor: default}
 }
 .bar__after__ div{height:10px;box-sizing: border-box;position:absolute;border:4px blue solid;}
 .bar__before__ div{height:10px;box-sizing: border-box;position:absolute;border:4px blue solid;}
-.active-drop{border:2px red solid;}
+.active-drop{border:2px blue solid;}
 #active-border{position: absolute !important;}

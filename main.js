@@ -1,13 +1,20 @@
-    function activeonly($obj){
-        $(".active-border").removeClass("active-border");
-        $obj.addClass("active-border");
-    }
-    var $dragwho=null;
-    var $isdragging=false;
-    var whoisclosest=null;
-    var direction=1;
     $(function(){
-        $('body *').draggable({
+        var dragwho = null;
+        $("body *").mouseenter(function(){
+            $(".active-border").removeClass("active-border");
+            $(this).addClass("active-border");
+        });
+        $("body *").mouseleave(function(){
+            $(this).css("border","");
+            $(this).css("box-sizing:","");
+            if($(this).prop("tagName")=="HTML")
+                return;
+            if($(this).parent().is(":hover")){
+                $(".active-border").removeClass("active-border");
+                $(this).parent().addClass("active-border");
+            }
+        });
+        /*$('body *').draggable({
             containment: 'document',
             helper: 'clone',
             zIndex:1,
@@ -75,28 +82,8 @@
             },
             cursorAt: { left: 0,top:0 }
         });
-        
-        $("body *").mouseenter(function(){
-            if($isdragging){
-                
-            }
-            else{
-                activeonly($(this));
-                $dragwho  = $(this);
-            }
-        });
-        $("body *").mouseleave(function(){
-            if($isdragging)
-                return;
-            $(this).css("border","");
-            $(this).css("box-sizing:","");
-            if($(this).prop("tagName")=="HTML")
-                return;
-            if($(this).parent().is(":hover")){
-                activeonly($(this).parent());
-                $dragwho  = $(this).parent();
-            }
-        });
+        */
+        /*
         $("body *").droppable({
             over:function(event,ui){
                 $(this).addClass("over-drop");
@@ -110,5 +97,31 @@
             },
             tolerance: "pointer"
         });
+        */
+        function dragstart(event){
+            dragwho = event.target;
+        }
+        function dragenter(event){
+            $(".active-drop").removeClass("active-drop");
+            $(event.target).addClass("active-drop");
+            //alert("hahaha");
+        }
+        function dragleave(event){
+            $(event.target).removeClass("active-drop");
+            $(event.target).removeClass("over-drop");
+            $(event.target).parent("over-drop").addClass("active-drop");
+        }
+        function dragover(event){
+            event.preventDefault();
+        }
+        function drop(event){
+            event.preventDefault();
+        }
+        $("body *").attr("draggable","true");
+        $("body *").on("dragstart",dragstart);
+        $("body *").on("dragenter",dragenter);
+        $("body *").on("dragover",dragover);
+        $("body *").on("drop",drop);
+        
     });
     

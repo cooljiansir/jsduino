@@ -19,7 +19,7 @@
       text-align: center}
   #inputdiv {width:100%;border: 2px solid;box-sizing:border-box;}
   html, body{height: 100%; margin: 0;font-family:monospace;font-size: 11pt;}
-  #viewercontainer{width:100%;border-bottom: 1px solid;height: 80%;box-sizing: border-box;padding: 0 10px 10px 10px;}
+  #viewercontainer{width:100%;border-bottom: 1px solid;height: 80%;box-sizing: border-box;padding: 0 0px 0px 0px;}
   #viewer{width:100%;height:100%;margin-right: 20px;box-sizing: border-box;}
   #viewercontainer iframe{width:100%;height:100%;border:1px solid;box-sizing: border-box;overflow:visible;}
   #codeedit{width:100%}
@@ -113,7 +113,6 @@
         $('#viewercontainer').resizable({handles: 's'});
         
         $("#widgetList ul li").attr("draggable","true");
-//        $("#widgetList ul li").on("dragover",function(event){event.preventDefault();})
         
     </script>
     <script type=text/javascript src="draganddrop.js"></script>

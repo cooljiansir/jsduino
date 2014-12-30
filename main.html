@@ -21,10 +21,11 @@
   html, body{height: 100%; margin: 0;font-family:monospace;font-size: 11pt;}
   #viewercontainer{width:100%;border-bottom: 1px solid;height: 80%;box-sizing: border-box;padding: 0 0px 0px 0px;}
   #viewer{width:100%;height:100%;margin-right: 20px;box-sizing: border-box;}
-  #viewercontainer iframe{width:100%;height:100%;border:1px solid;box-sizing: border-box;overflow:visible;}
+  #viewercontainer iframe{width:100%;height:100%;border:0px solid;box-sizing: border-box;overflow:visible;}
   #codeedit{width:100%}
-  #treediv{width:100%;border-bottom: 1px solid;height: 20%;}      
-  #propertydiv{width:100%;}  
+  #doctreediv{width:100%;border-bottom: 1px solid;height: 20%;}      
+  #propertydiv{width:100%;}
+  #wrapper{width: 100%;height: 100%;position: absolute;left: 0;top: 0; display: block;opacity: 0.0001;pointer-events:none;}
 
   /*#viewer{width: 100%;height:100%;
     -ms-transform: scale(0.5);
@@ -44,10 +45,10 @@
  <div id="widgetList">
      <div id="inputdiv"><input value="filter"/></div>
      <div class="bar">Layouts</div>
-     <ul><li><img src="images/row.jpg"/>row</li><li><img src="images/column.jpg"/>column</li></ul>
+     <ul><li id="widget_row"><img src="images/row.jpg"/>row</li><li><img src="images/column.jpg"/>column</li></ul>
      <div class="bar">Buttons</div>
      <ul>
-            <li><img src="images/button.png"/>Push Button</li>
+            <li id="widget_button"><img src="images/button.png"/>Push Button</li>
             <li><img src="images/radiobutton.png"/>Radio Button</li>
             <li><img src="images/checkbox.png"/>Check Box</li>
      </ul>
@@ -87,15 +88,17 @@
           <div id="viewercontainer">
               <div id="viewer">
                 <iframe src="test.htm" id="frame"></iframe>
+                <div id="wrapper"></div> 
               </div>
           </div>
           <div id="codeedit"></div>
       </div>
       <div id="rightdiv">
-          <div id="treediv"></div>
-          <div id="propertydiv"></div>
+          <div id="doctreediv">fdsafd</div>
+          <div id="propertydiv">fdsaf</div>
       </div>
   </div>
+    
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="jquery-ui.js"></script>
     <script type="text/javascript">
@@ -108,11 +111,35 @@
                $(this).next("ul").hide();}
             else {$(this).next("ul").show();}
         });
-        $('#widgetListcontainer').resizable({handles: 'e'});
-        $('#centerdiv').resizable({handles: 'e'});
-        $('#viewercontainer').resizable({handles: 's'});
-        
-        $("#widgetList ul li").attr("draggable","true");
+        $('#widgetListcontainer').resizable({
+            handles: 'e',
+            start:function(event,ui){
+                $("#wrapper").css("pointer-events","auto");
+            },
+            stop:function(event,ui){
+                $("#wrapper").css("pointer-events","none");
+            }
+        });
+        $('#centerdiv').resizable({
+            handles: 'e',
+            start:function(event,ui){
+                $("#wrapper").css("pointer-events","auto");
+            },
+            stop:function(event,ui){
+                $("#wrapper").css("pointer-events","none");
+            }
+        });
+        $('#viewercontainer').resizable({
+            handles: 's',
+            start:function(event,ui){
+                $("#wrapper").css("pointer-events","auto");
+            },
+            stop:function(event,ui){
+                $("#wrapper").css("pointer-events","none");
+            }
+        });
+        $("#doctreediv").resizable({handles:'s'});
+
         
     </script>
     <script type=text/javascript src="draganddrop.js"></script>

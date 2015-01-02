@@ -4,14 +4,18 @@ $(function(){
     var whoisclosest = null;
     var direction;
     
-    //id => element
-    var addtable={
-        'widget_row':"<div class=\"row\">Empty row</div>",
-        'widget_button':'<a class="btn btn-primary">Click me</a>'
-    };
-    
     $("#viewer iframe").load(function(){
         $iframe = $("#viewer iframe").contents();
+        
+        
+        $("#over").width($iframe.width());
+        $("#over").height($iframe.height());
+        $(window).resize(function(event){
+            $("#over").width($iframe.width());
+            $("#over").height($iframe.height());
+            console.log("resize");
+        });
+        
         ///////////////////////////////////////////
         function hover(element){
             $(element).mouseenter(function(){
@@ -53,7 +57,7 @@ $(function(){
         function dragenter(event){
             $iframe.find(".active-drop").removeClass("active-drop");
             $(event.target).addClass("active-drop");
-            $iframe.find("#active-border").show();
+            $("#active-border").show();
             return false;
         }
         function dragover(event){
@@ -67,36 +71,36 @@ $(function(){
             $iframe.find(".active-drop").not("div[class^='col-md-']").each(function(){
                 whoisclosest = $(this);
                 if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
-                    $iframe.find("#active-border").offset($(this).offset());
+                    //$("#active-border").offset($(this).offset());
                     direction = 1;
                 }else{
                     var offset2 = $(this).offset();
                     offset2.top += $(this).outerHeight();
-                    $iframe.find("#active-border").offset(offset2);
+                    //$("#active-border").offset(offset2);
                     direction = 2;
                 }
-                $iframe.find("#active-border").css("height","0");
-                $iframe.find("#active-border").css("width",$(this).outerWidth()+"px");
+                //$("#active-border").css("height","0");
+                //$("#active-border").css("width",$(this).outerWidth()+"px");
             });
             $iframe.find(".active-drop").filter("div[class^='col-md-']").each(function(){
                 whoisclosest = $(this);
                 if(offset.left<$(this).offset().left+$(this).outerWidth()/2){
-                    $iframe.find("#active-border").offset($(this).offset());
+                    //$("#active-border").offset($(this).offset());
                     direction = 3;
                 }else{
                     var offset2 = $(this).offset();
                     offset2.left += $(this).outerWidth();
-                    $iframe.find("#active-border").offset(offset2);
+                    //$("#active-border").offset(offset2);
                     direction = 4;
                 }
-                $iframe.find("#active-border").css("width","0");
-                $iframe.find("#active-border").css("height",$(this).outerHeight()+"px");
+                //$("#active-border").css("width","0");
+//                $("#active-border").css("height",$(this).outerHeight()+"px");
             });
             return false;
         }
         function drop(event){
             event.preventDefault();
-            $iframe.find("#active-border").hide();
+//            $("#active-border").hide();
             if(!$(this).hasClass("active-drop"))
                 return false;
             if(dragmove==1){
@@ -108,26 +112,25 @@ $(function(){
                 }
             }
             else if(dragmove==2){
-                var id = $(dragwho).attr('id');
-                var append = addtable[id];
+                var ape = $(dragwho).next(".clonepattern").children().clone(true);
                 //alert();
                 if(whoisclosest!=null){
                     if(direction==1||direction==3){
-                        $(whoisclosest).before(append);
-                        //initelement($(whoisclosest).prev());
-                        //$iframe.location.reload();
+                        $(whoisclosest).before(ape);
+                        $(ape).show();
                     }
                     if(direction==2||direction==4){
-                        $(whoisclosest).after(append);
-                        //initelement($(whoisclosest).next());
-                        //$iframe.location.reload();
+                        $(whoisclosest).after(ape);
+                        $(ape).show();
                     }
                     
                 }
             }
             return false;
         }
+        
         function initelement(element){
+            $(element).attr("draggable","true");
             $(element).mousedown(function(){
                 $(element).attr("draggable","true");
             });
@@ -142,6 +145,7 @@ $(function(){
             
             hover(element);
         }
+        
         $iframe.find("body *").each(function(){
             initelement(this);
         });
@@ -150,6 +154,9 @@ $(function(){
         $("#widgetList ul li").each(function(){
             this.addEventListener("dragstart",dragaddstart,false);
             this.addEventListener("dragend",dragaddend,false);
+        });
+        $("#widgetList ul li.clonepattern > *").each(function(){
+            initelement(this);
         });
     });
 });

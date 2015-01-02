@@ -4,12 +4,19 @@
   <meta charset="utf-8">
   <link href="main.css" rel="stylesheet" type="text/css">
   <style>
+  #leftmenu{float: left;height: 100%;width: 72px;border-right: 1px solid;background: -webkit-linear-gradient(left,#4B4B4B,#787878);}
+  #leftmenu ul{padding: 0;height: 100%;margin: 0;}
+  #leftmenu ul li{list-style: none;margin: 0;cursor: default; text-align: center;font-size: 10pt;color: white;}
+  #leftmenu ul li:hover{background-color: #333333}      
+  #leftmenu ul li img{width: 50px;height: 50px; vertical-align: middle;}
+  #ui-editor{height: 100%;}
   #widgetListcontainer{ width: 200px; height:100%;border-right: 1px solid;float: left;}
   #widgetList {width: 100%; height:100%;overflow-x: auto}
   #widgetList input{width: 100%;border:none}
   #widgetList ul{padding: 0 0 5px 0;border-bottom: 1px #888888 solid;margin: 0}
   #widgetList li{list-style: none;margin: 0;cursor: default;line-height: 25px;height: 25px; display: block;}
-  #widgetList li img{width: 20px;height: 20px;margin:0 5px 0 5px;vertical-align: middle;}      
+  #widgetList li img{width: 20px;height: 20px;margin:0 5px 0 5px;vertical-align: middle;}
+  #widgetList .clonepattern{display: none}    
   #widgetList .bar{background-color: #EEEEEE;
       background: linear-gradient(#F1F1F1,#DDDDDD);
       border-bottom:1px #888888 solid; 
@@ -25,7 +32,9 @@
   #codeedit{width:100%}
   #doctreediv{width:100%;border-bottom: 1px solid;height: 20%;}      
   #propertydiv{width:100%;}
-  #wrapper{width: 100%;height: 100%;position: absolute;left: 0;top: 0; display: block;opacity: 0.0001;pointer-events:none;}
+  #wrapper{width: 100%;height: 100%;position: absolute;left: 0;top: 0;pointer-events:none;overflow: hidden;}
+  #over{overflow: visible;}
+  #active-border{position: absolute !important;border: 4px blue solid;}    
 
   /*#viewer{width: 100%;height:100%;
     -ms-transform: scale(0.5);
@@ -41,14 +50,29 @@
 
 </head>
 <body>
+ <div id="leftmenu">
+     <ul>
+         <li><img src="images/demo.png"/>Example</li>
+         <li><img src="images/demo.png"/>Edit</li>
+         <li><img src="images/demo.png"/>Design</li>
+         <li><img src="images/demo.png"/>Download</li>
+     </ul>
+ </div>
+ <div id="ui-editor">
  <div id="widgetListcontainer">
  <div id="widgetList">
      <div id="inputdiv"><input value="filter"/></div>
      <div class="bar">Layouts</div>
-     <ul><li id="widget_row"><img src="images/row.jpg"/>row</li><li><img src="images/column.jpg"/>column</li></ul>
+     <ul>
+         <li id="widget_row"><img src="images/row.jpg"/>row</li>
+         <li class="clonepattern"><div class="row">Empty row</div></li>
+         <li><img src="images/column.jpg"/>column</li>
+         
+     </ul>
      <div class="bar">Buttons</div>
      <ul>
             <li id="widget_button"><img src="images/button.png"/>Push Button</li>
+            <li class="clonepattern"><a class="btn btn-primary">Click me</a></li>
             <li><img src="images/radiobutton.png"/>Radio Button</li>
             <li><img src="images/checkbox.png"/>Check Box</li>
      </ul>
@@ -88,7 +112,10 @@
           <div id="viewercontainer">
               <div id="viewer">
                 <iframe src="test.htm" id="frame"></iframe>
-                <div id="wrapper"></div> 
+                <div id="wrapper">
+                   <!--<div id="active-border"></div>-->
+                    <div id="over"></div>
+                </div> 
               </div>
           </div>
           <div id="codeedit"></div>
@@ -143,6 +170,6 @@
         
     </script>
     <script type=text/javascript src="draganddrop.js"></script>
-    
+</div>    
 </body>
 </html>			

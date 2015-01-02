@@ -62,13 +62,18 @@ $(function(){
         }
         function dragover(event){
             event.preventDefault();
-            var offset={left:event.clientX,top:event.clientY};
-            offset.top += $iframe.find("body").scrollTop();
-            offset.left +=  $iframe.find("body").scrollLeft();
+            
+            if(!$(this).hasClass("active-drop"))
+                return false;
+            console.log("pageX "+ event.originalEvent.pageX+" pageY "+event.originalEvent.pageY);
+            
+            var offset={left:event.originalEvent.pageX,top:event.originalEvent.pageY};
+            
             var mmin = 1<<28;
             whoisclosest = null;
             
             $iframe.find(".active-drop").not("div[class^='col-md-']").each(function(){
+                console.log("top "+$(this).offset().top+" left "+$(this).offset().left);
                 whoisclosest = $(this);
                 if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
                     //$("#active-border").offset($(this).offset());
@@ -100,11 +105,15 @@ $(function(){
         }
         function drop(event){
             event.preventDefault();
+            console.log("drop "+dragmove);
+            console.log("this "+$(this).attr("class"));
 //            $("#active-border").hide();
             if(!$(this).hasClass("active-drop"))
                 return false;
             if(dragmove==1){
+                console.log("drop 11");
                 if(whoisclosest!=null){
+                    console.log("drop 1");
                     if(direction==1||direction==3)
                         $(whoisclosest).before($(dragwho));
                     if(direction==2||direction==4)
@@ -112,9 +121,11 @@ $(function(){
                 }
             }
             else if(dragmove==2){
-                var ape = $(dragwho).next(".clonepattern").children().clone(true);
+                console.log("drop 22");
+                var ape = $(dragwho).next(".clonepattern").children().clone(true,true);
                 //alert();
                 if(whoisclosest!=null){
+                    console.log("drop 2");
                     if(direction==1||direction==3){
                         $(whoisclosest).before(ape);
                         $(ape).show();
@@ -128,20 +139,20 @@ $(function(){
             }
             return false;
         }
-        
+        function dragmousedown(){
+            $(this).attr("draggable","true");
+        }
+        function dragmouseup(){
+            $(this).removeAttr("draggable");
+        }
         function initelement(element){
-            $(element).attr("draggable","true");
-            $(element).mousedown(function(){
-                $(element).attr("draggable","true");
-            });
-            $(element).mouseup(function(){
-                $(element).removeAttr("draggable");
-            });
-            element.addEventListener('dragstart',dragstart,false); 
-            element.addEventListener('dragenter',dragenter,false); 
-            element.addEventListener('dragover',dragover,false); 
-            element.addEventListener('drop',drop,false);
-            element.addEventListener('dragend',dragend,false);
+            $(element).on("mousedown",dragmousedown);
+            $(element).on("mouseup",dragmouseup);
+            $(element).on("dragstart",dragstart);
+            $(element).on("dragenter",dragenter);
+            $(element).on("dragover",dragover);
+            $(element).on("drop",drop);
+            $(element).on("dragend",dragend);
             
             hover(element);
         }
@@ -152,8 +163,10 @@ $(function(){
         $("#widgetList ul li").attr("draggable","true");
         $("#widgetList ul li *").attr("draggable","false");
         $("#widgetList ul li").each(function(){
-            this.addEventListener("dragstart",dragaddstart,false);
-            this.addEventListener("dragend",dragaddend,false);
+            //this.addEventListener("dragstart",dragaddstart,false);
+            $(this).on("dragstart",dragaddstart);
+            $(this).on("dragend",dragaddend);
+            //this.addEventListener("dragend",dragaddend,false);
         });
         $("#widgetList ul li.clonepattern > *").each(function(){
             initelement(this);

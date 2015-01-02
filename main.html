@@ -4,11 +4,17 @@
   <meta charset="utf-8">
   <link href="main.css" rel="stylesheet" type="text/css">
   <style>
-  #leftmenu{float: left;height: 100%;width: 72px;border-right: 1px solid;background: -webkit-linear-gradient(left,#4B4B4B,#787878);}
+  #topmenu{position: absolute;background-color: #eeeeee; width: 100%;box-sizing: border-box;border-bottom: 1px solid;height: 25px;}      
+  #topmenu ul{padding: 0;height: 100%;margin: 0;}
+  #topmenu ul li{list-style: none;margin: 0;cursor: default;float: left;height: 23px;padding:3px 10px 0 10px;text-align: center;box-sizing: border-box}
+  #topmenu ul li:hover{background-color: #888888;color: white}
+  #appcontainer{width: 100%;height: 100%;padding-top: 25px;box-sizing: border-box;}      
+  #leftmenu{float: left;height: 100%;width: 70px;border-right: 1px solid;background: -webkit-linear-gradient(left,#4B4B4B,#787878);}
   #leftmenu ul{padding: 0;height: 100%;margin: 0;}
   #leftmenu ul li{list-style: none;margin: 0;cursor: default; text-align: center;font-size: 10pt;color: white;}
-  #leftmenu ul li:hover{background-color: #333333}      
-  #leftmenu ul li img{width: 50px;height: 50px; vertical-align: middle;}
+  #leftmenu ul li:hover{background-color: #333333}
+  #leftmenu ul li.selected{background: -webkit-linear-gradient(left,#aaaaaa,#e0e0e0);color: black;}    
+  #leftmenu ul li img{width: 40px;height: 40px; }
   #ui-editor{height: 100%;}
   #widgetListcontainer{ width: 200px; height:100%;border-right: 1px solid;float: left;}
   #widgetList {width: 100%; height:100%;overflow-x: auto}
@@ -50,12 +56,21 @@
 
 </head>
 <body>
+ <div id="topmenu">
+     <ul>
+         <li>File</li>
+         <li>Edit</li>
+         <li>Tools</li>
+         <li>Help</li>
+     </ul>
+</div>
+<div id="appcontainer">
  <div id="leftmenu">
      <ul>
          <li><img src="images/demo.png"/>Example</li>
-         <li><img src="images/demo.png"/>Edit</li>
-         <li><img src="images/demo.png"/>Design</li>
-         <li><img src="images/demo.png"/>Download</li>
+         <li><img src="images/edit-notes.png"/>Edit</li>
+         <li><img src="images/palette.png"/>Design</li>
+         <li><img src="images/download.png"/>Download</li>
      </ul>
  </div>
  <div id="ui-editor">
@@ -130,6 +145,8 @@
     <script type="text/javascript" src="jquery-ui.js"></script>
     <script type="text/javascript">
         $("#widgetList").attr("onselectstart","return false;");
+        $("#leftmenu").attr("onselectstart","return false;");
+        $("#topmenu").attr("onselectstart","return false;");
         $("#rightcenterdiv").attr("onselectstart","return false;");
         $("#viewer").attr("onselectstart","return false;");
         $("#viewer iframe body").contents().find("*").attr("onselectstart","return false;");
@@ -166,10 +183,16 @@
             }
         });
         $("#doctreediv").resizable({handles:'s'});
+        $("#leftmenu li").click(function(){
+            $(".selected").removeClass("selected");
+            $(this).addClass("selected");
+            
+        });
 
         
     </script>
     <script type=text/javascript src="draganddrop.js"></script>
 </div>    
+</div>
 </body>
 </html>			

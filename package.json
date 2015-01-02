@@ -1,0 +1,14 @@
+{
+  "main": "main.html",
+  "name": "Zhijian",
+  "description": "The simplest app to prototype with Twitter Bootstrap",
+  "version": "0.9.8",
+  "no-edit-menu" : true,  
+  "window": {
+    "title": "Pingendo",
+    "icon" : "pingendo.icns",
+    "toolbar" : false,
+    "width": 900,
+    "height": 600
+  }
+}

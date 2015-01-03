@@ -6,6 +6,7 @@ $(function(){
     var whoisclosest_ = null;
     var direction_;
     
+    
     $("#viewer iframe").load(function(){
         $iframe = $("#viewer iframe").contents();
         
@@ -79,7 +80,7 @@ $(function(){
         }
         function dragover(event){
             event.preventDefault();
-            
+            //return false;
             if(!$(this).hasClass("active-drop"))
                 return false;
             //console.log("pageX "+ event.originalEvent.pageX+" pageY "+event.originalEvent.pageY);
@@ -90,8 +91,11 @@ $(function(){
             whoisclosest = null;
             var fatheroffset = $("#over").offset();
             
-            $iframe.find(".active-drop").not("div[class^='col-md-']").each(function(){
-                console.log("top "+$(this).offset().top+" left "+$(this).offset().left);
+//            $(this).not("div[class^='col-md-']").each(function(){
+//                console.log("drag over");
+//            });
+            //$iframe.find(".active-drop").not("div[class^='col-md-']").each(function(){
+              $(this).not("div[class^='col-md-']").each(function(){
                 whoisclosest = $(this);
                 
                 if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
@@ -115,26 +119,37 @@ $(function(){
                 whoisclosest_ = whoisclosest;
                 direction_ = direction;
             });
-            $iframe.find(".active-drop").filter("div[class^='col-md-']").each(function(){
+            
+            //$iframe.find(".active-drop").filter("div[class^='col-md-']").each(function(){
+            $(this).filter("div[class^='col-md-']").each(function(){
                 whoisclosest = $(this);
                 if(offset.left<$(this).offset().left+$(this).outerWidth()/2){
-                    $("#drag-helper").offset({left:$(this).offset().left+$("#over").offset().left,
+                    if(whoisclosest!=whoisclosest_||direction!=direction_){
+                        $("#drag-helper").offset({left:$(this).offset().left+$("#over").offset().left,
                                              top:$(this).offset().top+$("#over").offset().top});
+                    }
                     direction = 3;
                 }else{
                     var offset2 = $(this).offset();
                     offset2.left += $(this).outerWidth();
-                    $("#drag-helper").offset({left:offset2.left+fatheroffset.left,
+                    if(whoisclosest!=whoisclosest_||direction!=direction_){
+                        $("#drag-helper").offset({left:offset2.left+fatheroffset.left,
                          top:offset2.top+fatheroffset.top});
+                    }
                     direction = 4;
                 }
-                $("#drag-helper").css("width","0");
-                $("#drag-helper").css("height",$(this).outerHeight()+"px");
+                if(whoisclosest!=whoisclosest_||direction!=direction_){
+                    $("#drag-helper").css("width","0");
+                    $("#drag-helper").css("height",$(this).outerHeight()+"px");
+                }
+                whoisclosest_ = whoisclosest;
+                direction_ = direction;
             });
             return false;
         }
         function drop(event){
             event.preventDefault();
+            
             console.log("drop "+dragmove);
             console.log("this "+$(this).attr("class"));
             $("#drag-helper").hide();
@@ -211,17 +226,21 @@ $(function(){
         //$("#code-textarea").text($iframe.html());
         //console.log("content "+$("#viewer iframe")[0].html());
         var frameObj = document.getElementById("frame");
-        var frameContent = frameObj.contentWindow.document.body.innerHTML;
+        //var frameContent = frameObj.contentWindow.document.body.outerHTML;
+        var frameContent = $("#frame").contents().find("html")[0].outerHTML;
+        
+        //$("#frame").contents()
         $("#code-textarea").text(frameContent);
+        
         var myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("code-textarea"),{
-            mode: 'javascript',  
+            mode: 'htmlmixed',  
             indentWithTabs: true,  
             smartIndent: true,  
             lineNumbers: true,  
             matchBrackets : true,  
             autofocus: true  
         });
-        myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+        myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
         //myCodeMirror2.setSize($("#codeedit").width(),$("#codeedit").height());
         $('#viewercontainer').resizable({
             handles: 's',
@@ -232,7 +251,7 @@ $(function(){
                 $("#wrapper").css("pointer-events", "none");
             },
             resize:function(event,ui){
-                myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+                myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
             }
         });
         $('#centerdiv').resizable({
@@ -247,5 +266,21 @@ $(function(){
                 myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
             }
         });
+        
+        
+    /*      var gui = require('nw.gui');
+  var win = gui.Window.get();
+  var menubar = new gui.Menu({ type: 'menubar' });
+  var file = new gui.Menu();
+  var help = new gui.Menu();
+  win.menu = menubar;
+      */
+        var gui = require('nw.gui');
+var mb = new gui.Menu({type:"menubar"});
+mb.createMacBuiltin("your-app-name");
+gui.Window.get().menu = mb;
+        
+        
+        
     });
 });

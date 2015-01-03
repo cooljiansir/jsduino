@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="utf-8">
-    <link href="main.css" rel="stylesheet" type="text/css">
     <style>
         #topmenu {
             position: absolute;
@@ -35,7 +34,6 @@
         #appcontainer {
             width: 100%;
             height: 100%;
-            padding-top: 25px;
             box-sizing: border-box;
         }
         #leftmenu {
@@ -158,6 +156,7 @@
             border-top: 1px solid;
             height: auto;
             position: absolute;
+            cursor: text;
         }
         #doctreediv {
             width: 100%;
@@ -208,20 +207,21 @@
             float: left;
             width: 80%;
         }
+        #code-editor{
+            height: 100%;
+           /* width: 100%;*/
+            overflow: hidden;
+            display: none;
+        }
+        #code-editor .CodeMirror{
+            height: 100%;
+        }
     </style>
     <link rel="stylesheet" "text/css" href="jquery-ui.css" />
 
 </head>
 
 <body>
-    <div id="topmenu">
-        <ul>
-            <li>File</li>
-            <li>Edit</li>
-            <li>Tools</li>
-            <li>Help</li>
-        </ul>
-    </div>
     <div id="appcontainer">
         <div id="leftmenu">
             <ul>
@@ -311,8 +311,13 @@
                     <div id="doctreediv">fdsafd</div>
                     <div id="propertydiv">fdsaf</div>
                 </div>
-            </div>
-
+            </div>     
+        </div>
+        <div id="code-editor">
+        </div>
+    </div>   
+</body>
+    
             <script type="text/javascript" src="jquery.js"></script>
             <script type="text/javascript" src="jquery-ui.js"></script>
             <script type="text/javascript">
@@ -339,35 +344,11 @@
                         $("#wrapper").css("pointer-events", "none");
                     }
                 });
-                $('#centerdiv').resizable({
-                    handles: 'e',
-                    start: function(event, ui) {
-                        $("#wrapper").css("pointer-events", "auto");
-                    },
-                    stop: function(event, ui) {
-                        $("#wrapper").css("pointer-events", "none");
-                    }
-                });
-/*                $('#viewercontainer').resizable({
-                    handles: 's',
-                    start: function(event, ui) {
-                        $("#wrapper").css("pointer-events", "auto");
-                    },
-                    stop: function(event, ui) {
-                        $("#wrapper").css("pointer-events", "none");
-                    },
-                    resize:function(event,ui){
-                        
-                    }
-                });*/
+
                 $("#doctreediv").resizable({
                     handles: 's'
                 });
-                /*$("#leftmenu li ").click(function() {
-                    $(".selected").removeClass("selected");
-                    $(this).addClass("selected");
 
-                });*/
                 $("#leftmenu-demo").click(function(){
 //                    $("#");
                 });
@@ -389,13 +370,19 @@
                 });
             </script>
             
-            <script src="codemirror-4.10/lib/codemirror.js"></script>
             <link rel="stylesheet" href="codemirror-4.10/lib/codemirror.css">
+            <link rel="stylesheet" href="codemirror-4.10/addon/hint/show-hint.css">
+            <script src="codemirror-4.10/lib/codemirror.js"></script>
+            <script src="codemirror-4.10/addon/hint/show-hint.js"></script>
+            <script src="codemirror-4.10/addon/hint/xml-hint.js"></script>
+            <script src="codemirror-4.10/addon/hint/html-hint.js"></script>
+            <script src="codemirror-4.10/mode/xml/xml.js"></script>
             <script src="codemirror-4.10/mode/javascript/javascript.js"></script>
+            <script src="codemirror-4.10/mode/css/css.js"></script>
+            <script src="codemirror-4.10/mode/htmlmixed/htmlmixed.js"></script>
             
             <script type=text/javascript src="draganddrop.js"></script>
-            
-            <script type="text/javascript">
+             <script type="text/javascript">
                 var myCodeMirror = CodeMirror(document.getElementById("code-editor"),{
                     mode: 'javascript',  
                     indentWithTabs: true,  
@@ -404,19 +391,27 @@
                     matchBrackets : true,  
                     autofocus: true  
                 });
-                
-                
-                
+
+                     //get node webkit GUI
+                var gui = require('nw.gui');
+
+                     // get the window object
+                var win = gui.Window.get();
+                var menubar = new gui.Menu({type: 'menubar'}); 
+                var file = new gui.Menu(); 
+                file.append(new gui.MenuItem({label: 'Action 1',click: function() {alert('Action 1 Clicked');}})); 
+                file.append(new gui.MenuItem({label: 'Action 2',click: function() {alert('Action 2 Clicked');}}));
+                var edit = new gui.Menu(); 
+                edit.append(new gui.MenuItem({label: 'Action 1',click: function() {alert('Action 1 Clicked');}})); 
+                edit.append(new gui.MenuItem({label: 'Action 2',click: function() {alert('Action 2 Clicked');}}));             
+
+                menubar.append(new gui.MenuItem({ label: 'File', submenu: file}));
+                menubar.append(new gui.MenuItem({ label: 'Edit', submenu: edit}));
+                menubar.append(new gui.MenuItem({ label: 'Tools', submenu: file}));
+                menubar.append(new gui.MenuItem({ label: 'Help', submenu: edit}));             
+
+                win.menu = menubar;
+                 
+                 
             </script>
-            
-            
-            
-        </div>
-        <div id="code-editor">
-        </div>
-    </div>
-        
-
-</body>
-
 </html>

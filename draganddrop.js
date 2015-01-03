@@ -3,6 +3,8 @@ $(function(){
     var dragmove = -1;  //-1 invalid ;1 move;2 add
     var whoisclosest = null;
     var direction;
+    var whoisclosest_ = null;
+    var direction_;
     
     $("#viewer iframe").load(function(){
         $iframe = $("#viewer iframe").contents();
@@ -17,10 +19,23 @@ $(function(){
         });
         
         ///////////////////////////////////////////
+        function activeonly(element){
+                //$("#over").width($($iframe).width());
+                //$("#over").width($($iframe).height());
+                //$("#over").offset({top:$("#over").parent().offset().top-$iframe.scrollTop(),
+                //                   left:$("#over").parent().offset().left+$iframe.scrollLeft()});
+                $("#active-border").offset({top:$(element).offset().top+$("#over").offset().top,
+                                           left:$(element).offset().left+$("#over").offset().left});
+                $("#active-border").css("width",$(element).outerWidth()+"px");
+                $("#active-border").css("height",$(element).outerHeight()+"px");
+        }
         function hover(element){
             $(element).mouseenter(function(){
                 $iframe.find(".active-border").removeClass("active-border");
                 $iframe.find(this).addClass("active-border");
+                
+                activeonly(element);
+                
             });
             $(element).mouseleave(function(){
                 $(this).css("border","");
@@ -30,6 +45,8 @@ $(function(){
                 if($(this).parent().is(":hover")){
                     $iframe.find(".active-border").removeClass("active-border");
                     $(this).parent().addClass("active-border");
+                    
+                    activeonly($(this).parent());
                 }
             });
         }
@@ -38,9 +55,9 @@ $(function(){
         
         function dragstart(event){
             dragwho = event.target;
-            $iframe.find(".active-border").removeClass("active-border");
-            $(dragwho).addClass("active-border");
+            activeonly(dragwho);
             dragmove = 1;
+            
         }
         function dragend(event){
             dragwho = null;
@@ -57,7 +74,7 @@ $(function(){
         function dragenter(event){
             $iframe.find(".active-drop").removeClass("active-drop");
             $(event.target).addClass("active-drop");
-            $("#active-border").show();
+            $("#drag-helper").show();
             return false;
         }
         function dragover(event){
@@ -65,41 +82,54 @@ $(function(){
             
             if(!$(this).hasClass("active-drop"))
                 return false;
-            console.log("pageX "+ event.originalEvent.pageX+" pageY "+event.originalEvent.pageY);
+            //console.log("pageX "+ event.originalEvent.pageX+" pageY "+event.originalEvent.pageY);
             
             var offset={left:event.originalEvent.pageX,top:event.originalEvent.pageY};
             
             var mmin = 1<<28;
             whoisclosest = null;
+            var fatheroffset = $("#over").offset();
             
             $iframe.find(".active-drop").not("div[class^='col-md-']").each(function(){
                 console.log("top "+$(this).offset().top+" left "+$(this).offset().left);
                 whoisclosest = $(this);
+                
                 if(offset.top<$(this).offset().top+$(this).outerHeight()/2){
-                    //$("#active-border").offset($(this).offset());
+                    if(whoisclosest!=whoisclosest_||direction!=direction_)
+                        $("#drag-helper").offset({left:$(this).offset().left+fatheroffset.left,
+                                             top:$(this).offset().top+fatheroffset.top});
                     direction = 1;
                 }else{
                     var offset2 = $(this).offset();
                     offset2.top += $(this).outerHeight();
-                    //$("#active-border").offset(offset2);
+                    
+                    if(whoisclosest!=whoisclosest_||direction!=direction_)
+                        $("#drag-helper").offset({left:offset2.left+fatheroffset.left,
+                                             top:offset2.top+fatheroffset.top});
                     direction = 2;
                 }
-                //$("#active-border").css("height","0");
-                //$("#active-border").css("width",$(this).outerWidth()+"px");
+                if(whoisclosest!=whoisclosest_||direction!=direction_){
+                    $("#drag-helper").css("height","0");
+                    $("#drag-helper").css("width",$(this).outerWidth()+"px");
+                }
+                whoisclosest_ = whoisclosest;
+                direction_ = direction;
             });
             $iframe.find(".active-drop").filter("div[class^='col-md-']").each(function(){
                 whoisclosest = $(this);
                 if(offset.left<$(this).offset().left+$(this).outerWidth()/2){
-                    //$("#active-border").offset($(this).offset());
+                    $("#drag-helper").offset({left:$(this).offset().left+$("#over").offset().left,
+                                             top:$(this).offset().top+$("#over").offset().top});
                     direction = 3;
                 }else{
                     var offset2 = $(this).offset();
                     offset2.left += $(this).outerWidth();
-                    //$("#active-border").offset(offset2);
+                    $("#drag-helper").offset({left:offset2.left+fatheroffset.left,
+                         top:offset2.top+fatheroffset.top});
                     direction = 4;
                 }
-                //$("#active-border").css("width","0");
-//                $("#active-border").css("height",$(this).outerHeight()+"px");
+                $("#drag-helper").css("width","0");
+                $("#drag-helper").css("height",$(this).outerHeight()+"px");
             });
             return false;
         }
@@ -107,7 +137,7 @@ $(function(){
             event.preventDefault();
             console.log("drop "+dragmove);
             console.log("this "+$(this).attr("class"));
-//            $("#active-border").hide();
+            $("#drag-helper").hide();
             if(!$(this).hasClass("active-drop"))
                 return false;
             if(dragmove==1){
@@ -170,6 +200,52 @@ $(function(){
         });
         $("#widgetList ul li.clonepattern > *").each(function(){
             initelement(this);
+        });
+        
+        ////////////////////////////////////////
+        $($iframe).scroll(function(event){
+                $("#over").offset({top:$("#over").parent().offset().top-$iframe.scrollTop(),
+                                   left:$("#over").parent().offset().left+$iframe.scrollLeft()});
+        });
+        ////////////////////////////////////////
+        //$("#code-textarea").text($iframe.html());
+        //console.log("content "+$("#viewer iframe")[0].html());
+        var frameObj = document.getElementById("frame");
+        var frameContent = frameObj.contentWindow.document.body.innerHTML;
+        $("#code-textarea").text(frameContent);
+        var myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("code-textarea"),{
+            mode: 'javascript',  
+            indentWithTabs: true,  
+            smartIndent: true,  
+            lineNumbers: true,  
+            matchBrackets : true,  
+            autofocus: true  
+        });
+        myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+        //myCodeMirror2.setSize($("#codeedit").width(),$("#codeedit").height());
+        $('#viewercontainer').resizable({
+            handles: 's',
+            start: function(event, ui) {
+                $("#wrapper").css("pointer-events", "auto");
+            },
+            stop: function(event, ui) {
+                $("#wrapper").css("pointer-events", "none");
+            },
+            resize:function(event,ui){
+                myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+            }
+        });
+        $('#centerdiv').resizable({
+            handles: 'e',
+            start: function(event, ui) {
+                $("#wrapper").css("pointer-events", "auto");
+            },
+            stop: function(event, ui) {
+                $("#wrapper").css("pointer-events", "none");
+            },
+            resize:function(event,ui){
+                myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+            }
         });
     });
 });

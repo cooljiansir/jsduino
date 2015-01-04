@@ -268,19 +268,6 @@ $(function(){
         });
         
         
-    /*      var gui = require('nw.gui');
-  var win = gui.Window.get();
-  var menubar = new gui.Menu({ type: 'menubar' });
-  var file = new gui.Menu();
-  var help = new gui.Menu();
-  win.menu = menubar;
-      */
-        var gui = require('nw.gui');
-var mb = new gui.Menu({type:"menubar"});
-mb.createMacBuiltin("your-app-name");
-gui.Window.get().menu = mb;
-        
-        
         
     });
 });

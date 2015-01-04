@@ -413,5 +413,26 @@
                 win.menu = menubar;
                  
                  
+                 var exec = require('child_process').execFile;
+
+var fun =function(){
+   console.log("fun() start");
+      exec('E:\\pscp.exe',
+           ['-scp','-l','root','-pw','doghunter','192.168.240.1:/www/index.html','E:/'], 
+           {    encoding: 'utf8',
+                timeout: 0,
+                maxBuffer: 200*1024,
+                killSignal: 'SIGTERM',
+                cwd: './',
+                env: null },
+           function(err,stdout,stderr) {
+        console.log("Error "+err)
+        console.log("stdout "+stdout);
+        console.log("stderr "+stderr);
+    });  
+}
+fun();
+                 
+                 
             </script>
 </html>

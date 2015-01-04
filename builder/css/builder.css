@@ -31,18 +31,52 @@
             box-sizing: border-box;
         }
         #dialogback{
-            display: none;
-            background-color: rgba(0, 0, 0, 0.6);
+            /*background-color: rgba(0, 0, 0, 0.6);
             width: 100%;
             height: 100%;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 100;
-            align-content: center;
+            display: none;*/
         }
         #downloaddialog{
-            
+            display: none;
+        }
+        #downloaddialog .inputtitle{
+            width: 100px;
+/*            border: 1px solid;*/
+            display: inline-block;
+        }
+        #downloaddialog input{
+            width:200px;
+        }
+        #downloaddialog .row{
+/*            width: 300px;*/
+            margin: 10px;
+            text-align: center;
+        }
+        #downloadbut{
+            border: 1px solid;
+            text-decoration: none;
+            background-color: rgba(255,0,0,0.5);
+            display: inline-block;
+            padding: 5px;
+        }
+        #dlform{
+            width: 100%;
+        }
+        #dlstatus{
+            background-color: #000000;
+            color: #ffffff;
+            overflow: auto;
+            height: 100%;
+        }
+        #dlstatuswrapper{
+            overflow: hidden;
+            width: 100%;
+            border: 1px solid;
+            height: 200px;
         }
         #leftmenu {
             float: left;

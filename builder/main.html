@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" "text/css" href="css/builder.css" />
     <link rel="stylesheet" "text/css" href="../lib/jqueryui/jquery-ui.css" />
+    <link rel="stylesheet" "text/css" href="../lib/jqueryui/jquery-ui.theme.css" />
     <link rel="stylesheet" href="../lib/codemirror-4.10/lib/codemirror.css">
     <link rel="stylesheet" href="../lib/codemirror-4.10/addon/hint/show-hint.css">
 </head>
@@ -106,7 +107,13 @@
     </div>
     <div id="dialogback">
         <div id="downloaddialog">
-        fdasfdsaf
+            <div id="dlform">
+                <div class="row"><div class="inputtitle">IP:</div><input type="text" value="192.168.240.1"/></div>
+                <div class="row"><div class="inputtitle">UserName:</div><input type="text" value="root"/></div>
+                <div class="row"><div class="inputtitle">Password:</div><input type="password" /></div>
+                <div class="row"><a href="#" id="downloadbut">Download</a></div>
+            </div>
+            <div id="dlstatuswrapper"><div id="dlstatus"></div></div>
         </div>
     </div>
 </body>

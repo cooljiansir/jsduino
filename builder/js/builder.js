@@ -56,8 +56,7 @@ $("#leftmenu-design").click(function(){
     $(".leftselected").show();
 });
 $("#leftmenu-download").click(function(){
-    $("#dialogback").show();
-    
+    $("#downloaddialog").dialog({modal:true,draggable: true,width:700,title:'Download to your linino'});
 });
 
 
@@ -81,27 +80,32 @@ menubar.append(new gui.MenuItem({ label: 'Help', submenu: edit}));
 
 win.menu = menubar;
 
- /*
- var exec = require('child_process').execFile;
+$("#downloadbut").click(function(){
+    $("#dlstatus").html("");
+    
+    var spawn = require('child_process').spawn;
+    var test = spawn('bin/pscp.exe',['-scp','-l','root','-pw','doghunter','-r','apps','192.168.240.1:/www/'],{cwd: './'});
 
-    var fun =function(){
-       console.log("fun() start");
-          exec('E:\\pscp.exe',
-               ['-scp','-l','root','-pw','doghunter','192.168.240.1:/www/index.html','E:/'], 
-               {    encoding: 'utf8',
-                    timeout: 0,
-                    maxBuffer: 200*1024,
-                    killSignal: 'SIGTERM',
-                    cwd: './',
-                    env: null },
-               function(err,stdout,stderr) {
-            console.log("Error "+err)
-            console.log("stdout "+stdout);
-            console.log("stderr "+stderr);
-        });  
-    }
-    fun();
- */
+    test.stdout.on('data',function(data){
+        //console.log("stdout data "+data);
+        var showStr = String(data).replace("\r","</br>");
+        
+        $("#dlstatus").append(String(showStr+"</br>").replace("</br>\n</br>","</br>"));
+    });
+
+    test.stderr.on('data',function(data){
+        //console.log("stderr "+data);
+        if(String(data).indexOf("The server's host key is not cached in the registry.")>=0){
+            test.stdin.write("n\n");
+        }
+    });
+
+    test.on('exit',function(code){
+        console.log("exit "+code);
+    });
+});
+
+
 
 var myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("code-textarea"),{
     mode: 'htmlmixed',  

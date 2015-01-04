@@ -1,0 +1,233 @@
+        #topmenu {
+            position: absolute;
+            background-color: #eeeeee;
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 1px solid;
+            height: 25px;
+        }
+        #topmenu ul {
+            padding: 0;
+            height: 100%;
+            margin: 0;
+        }
+        #topmenu ul li {
+            list-style: none;
+            margin: 0;
+            cursor: default;
+            float: left;
+            height: 23px;
+            padding: 3px 10px 0 10px;
+            text-align: center;
+            box-sizing: border-box
+        }
+        #topmenu ul li:hover {
+            background-color: #888888;
+            color: white
+        }
+        #appcontainer {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        #dialogback{
+            display: none;
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            align-content: center;
+        }
+        #downloaddialog{
+            
+        }
+        #leftmenu {
+            float: left;
+            height: 100%;
+            width: 70px;
+            border-right: 1px solid;
+            background: -webkit-linear-gradient(left, #4B4B4B, #787878);
+        }
+        #leftmenu ul {
+            padding: 0;
+            height: 100%;
+            margin: 0;
+        }
+        #leftmenu ul li {
+            list-style: none;
+            margin: 0;
+            cursor: default;
+            text-align: center;
+            font-size: 10pt;
+            color: white;
+        }
+        #leftmenu ul li:hover {
+            background-color: #333333
+        }
+        #leftmenu ul li.leftmenuselected {
+            background: -webkit-linear-gradient(left, #aaaaaa, #e0e0e0);
+            color: black;
+        }
+        #leftmenu ul li img {
+            width: 40px;
+            height: 40px;
+        }
+        #ui-editor {
+            height: 100%;
+            overflow: hidden;
+        }
+        #code-editor{
+            height: 100%;
+            overflow: hidden;
+            display: none;
+            box-sizing: border-box;
+        }
+        #code-editor .CodeMirror{
+            height: 100%;
+            width: 100%;
+        }
+        #widgetListcontainer {
+            width: 200px;
+            height: 100%;
+            border-right: 1px solid;
+            float: left;
+        }
+        #widgetList {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto
+        }
+        #widgetList input {
+            width: 100%;
+            border: none
+        }
+        #widgetList ul {
+            padding: 0 0 5px 0;
+            border-bottom: 1px #888888 solid;
+            margin: 0
+        }
+        #widgetList li {
+            list-style: none;
+            margin: 0;
+            cursor: default;
+            line-height: 25px;
+            height: 25px;
+            display: block;
+        }
+        #widgetList li img {
+            width: 20px;
+            height: 20px;
+            margin: 0 5px 0 5px;
+            vertical-align: middle;
+        }
+        #widgetList .clonepattern {
+            display: none
+        }
+        #widgetList .bar {
+            background-color: #EEEEEE;
+            background: linear-gradient(#F1F1F1, #DDDDDD);
+            border-bottom: 1px #888888 solid;
+            cursor: default;
+            user-select: none;
+            height: 17px;
+            text-align: center
+        }
+        #inputdiv {
+            width: 100%;
+            border: 2px solid;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: monospace;
+            font-size: 11pt;
+        }
+        #viewercontainer {
+            width: 100%;
+            border-bottom: 1px solid;
+            height: 70%;
+            box-sizing: border-box;
+            padding: 0 0px 0px 0px;
+            float: left;
+        }
+        #viewer {
+            width: 100%;
+            height: 100%;
+/*            margin-right: 20px;*/
+            box-sizing: border-box;
+/*            position: absolute;*/
+/*            -webkit-transform: scale(0.6666666) translate(-25%, -25%);*/
+        }
+        #viewercontainer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0px solid;
+            box-sizing: border-box;
+            overflow: visible;
+        }
+        #codeedit {
+            width: 100%;
+            height: 100%;
+            border-top: 1px solid;
+            overflow: hidden;
+        }
+        #codeedit .CodeMirror{
+            height: 100%;
+            width: 100%;
+        }
+        #doctreediv {
+            width: 100%;
+            border-bottom: 1px solid;
+            height: 20%;
+        }
+        #propertydiv {
+            width: 100%;
+        }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        #over {
+            //overflow: visible;
+            //border:4px solid;
+            //width: 100%;
+            //height: 100%;
+            //box-sizing:border-box;
+        }
+        #drag-helper{
+            border: 4px blue solid;
+            position: absolute;
+            display: none;
+        }
+        #active-border {
+/*            position: absolute !important;*/
+            border: 2px red solid;
+            box-sizing:border-box;
+            display: none;
+        }
+        #rightcenterdiv {
+            box-sizing: border-box;
+            overflow: hidden;
+            height: 100%;
+        }
+        #rightdiv {
+            overflow: hidden;
+            height: 100%;
+            
+        }
+        #centerdiv {
+            height: 100%;
+            border-right: 1px solid;
+            float: left;
+            width: 80%;
+        }

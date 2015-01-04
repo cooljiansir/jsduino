@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" "text/css" href="css/builder.css" />
+    <link rel="stylesheet" "text/css" href="../lib/jqueryui/jquery-ui.css" />
+    <link rel="stylesheet" href="../lib/codemirror-4.10/lib/codemirror.css">
+    <link rel="stylesheet" href="../lib/codemirror-4.10/addon/hint/show-hint.css">
+</head>
+
+<body>
+    <div id="appcontainer">
+        <div id="leftmenu">
+            <ul>
+                <li id="leftmenu-demo"><img src="images/demo.png" />Example</li>
+                <li id="leftmenu-edit"><img src="images/edit-notes.png" />Edit</li>
+                <li id="leftmenu-design"><img src="images/palette.png" />Design</li>
+                <li id="leftmenu-download"><img src="images/download.png" />Download</li>
+            </ul>
+        </div>
+        <div id="ui-editor">
+            <div id="widgetListcontainer">
+                <div id="widgetList">
+                    <div id="inputdiv">
+                        <input value="filter" />
+                    </div>
+                    <div class="bar">Layouts</div>
+                    <ul>
+                        <li id="widget_row"><img src="images/row.jpg" />row</li>
+                        <li class="clonepattern">
+                            <div class="row">Empty row</div>
+                        </li>
+                        <li><img src="images/column.jpg" />column</li>
+
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li id="widget_button"><img src="images/button.png" />Push Button</li>
+                        <li class="clonepattern"><a class="btn btn-primary">Click me</a>
+                        </li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li><img src="images/button.png" />Push Button</li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li><img src="images/button.png" />Push Button</li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li><img src="images/button.png" />Push Button</li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li><img src="images/button.png" />Push Button</li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Buttons</div>
+                    <ul>
+                        <li><img src="images/button.png" />Push Button</li>
+                        <li><img src="images/radiobutton.png" />Radio Button</li>
+                        <li><img src="images/checkbox.png" />Check Box</li>
+                    </ul>
+                    <div class="bar">Containers</div>
+                    <div class="bar">Input Widgets</div>
+                    <div class="bar">Display Widgets</div>
+                </div>
+            </div>
+            <div id="rightcenterdiv">
+                <div id="centerdiv">
+                    <div id="viewercontainer">
+                        <div id="viewer">
+                            <iframe src="test.html" id="frame"></iframe>
+                            <div id="wrapper">
+                                <div id="over">
+                                    <div id="active-border"></div>
+                                    <div id="drag-helper"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="codeedit">
+                        <textarea id="code-textarea"></textarea>
+                    </div>
+                </div>
+                <div id="rightdiv">
+                    <div id="doctreediv">fdsafd</div>
+                    <div id="propertydiv">fdsaf</div>
+                </div>
+            </div>     
+        </div>
+        <div id="code-editor">
+            <textarea id="jscode-textarea">fdsafdsa</textarea>
+        </div>
+    </div>
+    <div id="dialogback">
+        <div id="downloaddialog">
+        fdasfdsaf
+        </div>
+    </div>
+</body>
+    
+            <script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+            <script type="text/javascript" src="../lib/jqueryui/jquery-ui.js"></script>
+
+            <script src="../lib/codemirror-4.10/lib/codemirror.js"></script>
+            <script src="../lib/codemirror-4.10/addon/hint/show-hint.js"></script>
+            <script src="../lib/codemirror-4.10/addon/hint/xml-hint.js"></script>
+            <script src="../lib/codemirror-4.10/addon/hint/html-hint.js"></script>
+            <script src="../lib/codemirror-4.10/mode/xml/xml.js"></script>
+            <script src="../lib/codemirror-4.10/mode/javascript/javascript.js"></script>
+            <script src="../lib/codemirror-4.10/mode/css/css.js"></script>
+            <script src="../lib/codemirror-4.10/mode/htmlmixed/htmlmixed.js"></script>
+    
+            <script type="text/javascript" src="js/builder.js"></script>
+            <script type=text/javascript src="js/draganddrop.js"></script>
+</html>

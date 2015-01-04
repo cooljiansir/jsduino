@@ -1,0 +1,11 @@
+{
+    "name": "Linino",
+    "version": "0.1",
+    "main": "builder/main.html",
+    "no-edit-menu" : false,
+    "window": {
+        "title": "Linino",
+        "toolbar": true
+    },
+    "chromium-args" : "--enable-direct-write --allow-file-access-from-files"
+}

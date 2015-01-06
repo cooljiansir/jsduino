@@ -35,14 +35,14 @@
             </div>
             <div id="demo-item-div">
                 <div id="demo-item-wrapper">
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
-                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
+                    <div class="demo-item"><img src="images/demo1.png"/>The Hello world Example</br>Click buttons to turn on/off the LED</div>
                 </div>
                 
             </div>
@@ -109,7 +109,7 @@
                 <div id="centerdiv">
                     <div id="viewercontainer">
                         <div id="viewer">
-                            <iframe src="test.html" id="frame"></iframe>
+                            <iframe src="../examples/helloworld/index.html" id="frame"></iframe>
                             <div id="wrapper">
                                 <div id="over">
                                     <div id="active-border"></div>
@@ -123,24 +123,50 @@
                     </div>
                 </div>
                 <div id="rightdiv">
-                    <div id="doctreediv">fdsafd</div>
+                    <div id="doctreedivcontainer">
+                        <div id="doctreediv">
+                            <ul id="doctreeul">
+                                <li>└><span>body</span></li>
+                                <li>&nbsp;&nbsp;└><span>body</span></li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;└><span>body</span></li>
+
+                            </ul>
+
+                        </div>
+                    </div>
                     <div id="propertydiv">
-                        <div >id:<input type="text" /></div>
-                        <div >class:<input type="text" /></div>
+                        <div class="row"><div class="title">id:</div><div class="input"><input id="ui-id-input" type="text" /></div></div>
+                        <div class="row"><div class="title">class:</div><div class="input"><input id="ui-class-input" type="text" /></div></div>
+                        <div class="row"><div class="title">color:</div><div class="input"><div class="">●</div></div></div>
                     </div>
                 </div>
             </div>     
         </div>
         <div id="code-editor">
-            <textarea id="jscode-textarea">fdsafdsa</textarea>
+            <div id="file-list-div">
+                <ul>
+                    <li id="file-index">index.html</li>
+                    <li class="selected">index.js</li>
+                </ul>
+            </div>
+            <textarea id="jscode-textarea">$(function(){
+    
+    $("#buton").click(function(){
+        digitalWrite(13,HIGH);
+    });
+    
+    $("#butoff").click(function(){
+        digitalWrite(13,LOW);
+    });
+});</textarea>
         </div>
     </div>
     <div id="dialogback">
         <div id="downloaddialog">
             <div id="dlform">
-                <div class="row"><div class="inputtitle">IP:</div><input type="text" value="192.168.240.1"/></div>
-                <div class="row"><div class="inputtitle">UserName:</div><input type="text" value="root"/></div>
-                <div class="row"><div class="inputtitle">Password:</div><input type="password" /></div>
+                <div class="row"><div class="inputtitle">IP:</div><input id="dlid" type="text" value="192.168.240.1"/></div>
+                <div class="row"><div class="inputtitle">UserName:</div><input id="dlusername" type="text" value="root"/></div>
+                <div class="row"><div class="inputtitle">Password:</div><input id="dlpassword" type="password" /></div>
                 <div class="row"><a href="#" id="downloadbut">Download</a></div>
             </div>
             <div id="dlstatuswrapper"><div id="dlstatus"></div></div>

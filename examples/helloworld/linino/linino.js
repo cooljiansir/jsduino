@@ -1,3 +1,7 @@
+
+var HIGH="HIGH";
+var LOW="LOW";
+
 //at present pin can only be 13
 //value "HIGH" or "LOW"
 function digitalWrite(pin,value){    

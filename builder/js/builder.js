@@ -22,7 +22,7 @@ $('#widgetListcontainer').resizable({
     }
 });
 
-$("#doctreediv").resizable({
+$("#doctreedivcontainer").resizable({
     handles: 's'
 });
 $("#leftmenu-demo").click(function(){
@@ -62,12 +62,12 @@ $("#leftmenu-edit").click(function(){
     });
 });
 var myCodeMirror2="";
-$("#leftmenu-design").click(function(){
+function leftmenu_desgin_click(){
     $(".leftselected").hide();
     $(".leftselected").removeClass("leftselected");
     
     $(".leftmenuselected").removeClass("leftmenuselected");
-    $(this).addClass("leftmenuselected");
+    $("#leftmenu-design").addClass("leftmenuselected");
     
     $("#ui-editor").addClass("leftselected");    
     $(".leftselected").show();
@@ -82,7 +82,9 @@ $("#leftmenu-design").click(function(){
     });
 
     myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
-});
+
+}
+$("#leftmenu-design").click(leftmenu_desgin_click);
 $("#leftmenu-download").click(function(){
     $("#downloaddialog").dialog({modal:true,draggable: true,width:700,title:'Download to your linino'});
     $("#dlstatus").html("");
@@ -110,9 +112,9 @@ menubar.append(new gui.MenuItem({ label: 'Help', submenu: edit}));
 win.menu = menubar;
 
 $("#downloadbut").click(function(){
-    $ip="192.168.240.1";
-    $username="root";
-    $password="doghunter";
+    $ip=$("#dlid").val();//"192.168.240.1";
+    $username=$("#dlusername").val();//"root";
+    $password=$("#dlpassword").val();//"doghunter";
     $("#dlstatus").html("Connecting...");
     
     
@@ -126,7 +128,11 @@ $("#downloadbut").click(function(){
         $("#dlstatus").append("<h5>"+data+"</h5>");
         $("#dlstatus").scrollTop($("#dlstatus").height()+$("#dlstatuswrapper").height());
     }
-    function errdata(data){
+    var spawn = require('child_process').spawn;
+    //scp the web files
+    var webscp = spawn('bin/pscp.exe',['-scp','-l',$username,'-pw',$password,'-r','examples/helloworld',$ip+':/www/'],{cwd: './'});
+    webscp.stdout.on('data',scpdata);
+    webscp.stderr.on('data',function(data){
         if(String(data).indexOf("The server's host key is not cached in the registry.")>=0){
             webscp.stdin.write("n\n");
         }else{
@@ -136,28 +142,34 @@ $("#downloadbut").click(function(){
             }
             $("#dlstatus").append("<span>"+data+"</span>");
         }
-    }
-    var spawn = require('child_process').spawn;
-    //scp the web files
-    var webscp = spawn('bin/pscp.exe',['-scp','-l',$username,'-pw',$password,'-r','examples/helloworld',$ip+':/www/'],{cwd: './'});
-    webscp.stdout.on('data',scpdata);
-    webscp.stderr.on('data',errdata);
+    });
     //scp the .sh files
     var bashscp = spawn('bin/pscp.exe',['-scp','-l',$username,'-pw',$password,'server/testbash.sh',$ip+':/www/cgi-bin/'],{cwd: './'});
     bashscp.stdout.on('data',scpdata);
-    bashscp.stderr.on('data',errdata);
+    bashscp.stderr.on('data',function(data){
+        if(String(data).indexOf("The server's host key is not cached in the registry.")>=0){
+            bashscp.stdin.write("n\n");
+        }else{
+            if(firstline){
+                firstline = false;
+                $("#dlstatus").html("");
+            }
+            $("#dlstatus").append("<span>"+data+"</span>");
+        }
+    });
 
     bashscp.on('exit',function(code){
     //chmod a+x testbash.sh 
-        /*
         var Connection = require('ssh2');
 
         var conn = new Connection();
         conn.on('ready', function() {
           console.log('Connection :: ready');
-          conn.shell(function(err, stream) {
+          conn.exec('chmod a+x /www/cgi-bin/testbash.sh', function(err, stream) {
             if (err) throw err;
-            stream.on('close', function() {
+            stream.on('exit', function(code, signal) {
+              console.log('Stream :: exit :: code: ' + code + ', signal: ' + signal);
+            }).on('close', function() {
               console.log('Stream :: close');
               conn.end();
             }).on('data', function(data) {
@@ -165,41 +177,14 @@ $("#downloadbut").click(function(){
             }).stderr.on('data', function(data) {
               console.log('STDERR: ' + data);
             });
-            stream.end('chmod a+x /www/cgi-bin/testbash.sh \n');
           });
         }).connect({
-          host: $ip,
-          port: 22,
-          username: $username,
-          password: $password
-        });    
-        */
-        var Connection = require('ssh2');
-
-var conn = new Connection();
-conn.on('ready', function() {
-  console.log('Connection :: ready');
-  conn.exec('chmod a+x /www/cgi-bin/testbash.sh', function(err, stream) {
-    if (err) throw err;
-    stream.on('exit', function(code, signal) {
-      console.log('Stream :: exit :: code: ' + code + ', signal: ' + signal);
-    }).on('close', function() {
-      console.log('Stream :: close');
-      conn.end();
-    }).on('data', function(data) {
-      console.log('STDOUT: ' + data);
-    }).stderr.on('data', function(data) {
-      console.log('STDERR: ' + data);
-    });
-  });
-}).connect({
-          host: $ip,
-          port: 22,
-          username: $username,
-          password: $password
-        }); 
-        
-    });
+              host: $ip,
+              port: 22,
+              username: $username,
+              password: $password
+            }); 
+        });
     
 
 });
@@ -233,4 +218,45 @@ $('#centerdiv').resizable({
         $("#active-border").hide();
     }
 });
-
+$("#file-list-div").resizable({
+    handles:'e'
+});
+$("#frame").load(function(){
+    var frame = $("#frame").contents();
+    $(frame).find("*").click(function(){
+        //console.log("clicked "+$(this).prop("tagName")+$(this).prop("class"));
+        var iter = $(this);
+        var arr=[];
+        for(i=0;$(iter).prop("tagName")!="HTML";i++){
+            var cla = $(iter).prop("class");
+            var tmp = cla;
+            if(cla.indexOf(" ")>0){
+                tmp = cla.substr(0,cla.indexOf(" "));
+            }
+            if(tmp=="active-border"){
+                tmp="";
+            }
+            arr[i] = $(iter).prop("tagName")+" "+tmp;
+            iter = $(iter).parent();
+        }
+        var len = arr.length;
+        $("#doctreeul").html("");
+        for(i=len-1;i>=0;i--){
+            var tmp="<li>";
+            for(j=0;j<len-1-i;j++){
+                tmp = tmp + "&nbsp;"
+            }
+            tmp = tmp + "└><span>"+arr[i]+"</span></li>";
+            
+            $("#doctreeul").append(tmp);
+        }
+        
+        $("#ui-id-input").val($(this).prop("id"));
+        $("#ui-class-input").val($(this).prop("class").replace("active-border",""));
+        
+        
+        return false;
+    });
+    
+});
+$("#file-index").click(leftmenu_desgin_click);

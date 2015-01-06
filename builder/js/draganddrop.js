@@ -16,6 +16,8 @@ $(function(){
         $(window).resize(function(event){
             $("#over").width($iframe.width());
             $("#over").height($iframe.height());
+            if(myCodeMirror2!="")myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+            $("#active-border").hide();
             console.log("resize");
         });
         
@@ -224,19 +226,9 @@ $(function(){
                 $("#over").offset({top:$("#over").parent().offset().top-$iframe.scrollTop(),
                                    left:$("#over").parent().offset().left+$iframe.scrollLeft()});
         });
+        var codestr = $("#frame").contents().find("html")[0].outerHTML;
+        $("#code-textarea").text(codestr);
+        if(myCodeMirror2!="")myCodeMirror2.getDoc().setValue(codestr);
         
-        
-        ////////////////////////////////////////
-        //$("#code-textarea").text($iframe.html());
-        //console.log("content "+$("#viewer iframe")[0].html());
-        var frameObj = document.getElementById("frame");
-        //var frameContent = frameObj.contentWindow.document.body.outerHTML;
-        var frameContent = $("#frame").contents().find("html")[0].outerHTML;
-        
-        //$("#frame").contents()
-        //$("#code-textarea").text(frameContent);
-        myCodeMirror2.getDoc().setValue($("#frame").contents().find("html")[0].outerHTML);
-        
-
     });
 });

@@ -25,6 +25,22 @@ $('#widgetListcontainer').resizable({
 $("#doctreediv").resizable({
     handles: 's'
 });
+$("#leftmenu-demo").click(function(){
+    $(".leftselected").hide();
+    $(".leftselected").removeClass("leftselected");
+    
+    $(".leftmenuselected").removeClass("leftmenuselected");
+    $(this).addClass("leftmenuselected");
+    
+    $("#demos").addClass("leftselected");    
+    $(".leftselected").show();
+});
+
+
+$("#leftmenu-demo").addClass("leftmenuselected");
+$("#demos").addClass("leftselected");
+$("#demos").show();
+
 
 $("#leftmenu-edit").click(function(){
     $(".leftselected").hide();
@@ -45,6 +61,7 @@ $("#leftmenu-edit").click(function(){
         autofocus: true  
     });
 });
+var myCodeMirror2="";
 $("#leftmenu-design").click(function(){
     $(".leftselected").hide();
     $(".leftselected").removeClass("leftselected");
@@ -54,9 +71,21 @@ $("#leftmenu-design").click(function(){
     
     $("#ui-editor").addClass("leftselected");    
     $(".leftselected").show();
+    
+    myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("code-textarea"),{
+        mode: 'htmlmixed',  
+        indentWithTabs: true,  
+        smartIndent: true,  
+        lineNumbers: true,  
+        matchBrackets : true,  
+        autofocus: true  
+    });
+
+    myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
 });
 $("#leftmenu-download").click(function(){
     $("#downloaddialog").dialog({modal:true,draggable: true,width:700,title:'Download to your linino'});
+    $("#dlstatus").html("");
 });
 
 
@@ -81,43 +110,103 @@ menubar.append(new gui.MenuItem({ label: 'Help', submenu: edit}));
 win.menu = menubar;
 
 $("#downloadbut").click(function(){
-    $("#dlstatus").html("");
+    $ip="192.168.240.1";
+    $username="root";
+    $password="doghunter";
+    $("#dlstatus").html("Connecting...");
     
-    var spawn = require('child_process').spawn;
-    var test = spawn('bin/pscp.exe',['-scp','-l','root','-pw','doghunter','-r','apps','192.168.240.1:/www/'],{cwd: './'});
-
-    test.stdout.on('data',function(data){
-        //console.log("stdout data "+data);
-        var showStr = String(data).replace("\r","</br>");
-        
-        $("#dlstatus").append(String(showStr+"</br>").replace("</br>\n</br>","</br>"));
-    });
-
-    test.stderr.on('data',function(data){
-        //console.log("stderr "+data);
-        if(String(data).indexOf("The server's host key is not cached in the registry.")>=0){
-            test.stdin.write("n\n");
+    
+    var firstline = true;
+    
+    function scpdata(data){
+        if(firstline){
+            firstline = false;
+            $("#dlstatus").html("<h5></h5>");
         }
-    });
+        $("#dlstatus").append("<h5>"+data+"</h5>");
+        $("#dlstatus").scrollTop($("#dlstatus").height()+$("#dlstatuswrapper").height());
+    }
+    function errdata(data){
+        if(String(data).indexOf("The server's host key is not cached in the registry.")>=0){
+            webscp.stdin.write("n\n");
+        }else{
+            if(firstline){
+                firstline = false;
+                $("#dlstatus").html("");
+            }
+            $("#dlstatus").append("<span>"+data+"</span>");
+        }
+    }
+    var spawn = require('child_process').spawn;
+    //scp the web files
+    var webscp = spawn('bin/pscp.exe',['-scp','-l',$username,'-pw',$password,'-r','examples/helloworld',$ip+':/www/'],{cwd: './'});
+    webscp.stdout.on('data',scpdata);
+    webscp.stderr.on('data',errdata);
+    //scp the .sh files
+    var bashscp = spawn('bin/pscp.exe',['-scp','-l',$username,'-pw',$password,'server/testbash.sh',$ip+':/www/cgi-bin/'],{cwd: './'});
+    bashscp.stdout.on('data',scpdata);
+    bashscp.stderr.on('data',errdata);
 
-    test.on('exit',function(code){
-        console.log("exit "+code);
+    bashscp.on('exit',function(code){
+    //chmod a+x testbash.sh 
+        /*
+        var Connection = require('ssh2');
+
+        var conn = new Connection();
+        conn.on('ready', function() {
+          console.log('Connection :: ready');
+          conn.shell(function(err, stream) {
+            if (err) throw err;
+            stream.on('close', function() {
+              console.log('Stream :: close');
+              conn.end();
+            }).on('data', function(data) {
+              console.log('STDOUT: ' + data);
+            }).stderr.on('data', function(data) {
+              console.log('STDERR: ' + data);
+            });
+            stream.end('chmod a+x /www/cgi-bin/testbash.sh \n');
+          });
+        }).connect({
+          host: $ip,
+          port: 22,
+          username: $username,
+          password: $password
+        });    
+        */
+        var Connection = require('ssh2');
+
+var conn = new Connection();
+conn.on('ready', function() {
+  console.log('Connection :: ready');
+  conn.exec('chmod a+x /www/cgi-bin/testbash.sh', function(err, stream) {
+    if (err) throw err;
+    stream.on('exit', function(code, signal) {
+      console.log('Stream :: exit :: code: ' + code + ', signal: ' + signal);
+    }).on('close', function() {
+      console.log('Stream :: close');
+      conn.end();
+    }).on('data', function(data) {
+      console.log('STDOUT: ' + data);
+    }).stderr.on('data', function(data) {
+      console.log('STDERR: ' + data);
     });
+  });
+}).connect({
+          host: $ip,
+          port: 22,
+          username: $username,
+          password: $password
+        }); 
+        
+    });
+    
+
 });
 
 
 
-var myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("code-textarea"),{
-    mode: 'htmlmixed',  
-    indentWithTabs: true,  
-    smartIndent: true,  
-    lineNumbers: true,  
-    matchBrackets : true,  
-    autofocus: true  
-});
 
-
-myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
 //myCodeMirror2.setSize($("#codeedit").width(),$("#codeedit").height());
 $('#viewercontainer').resizable({
     handles: 's',
@@ -128,7 +217,7 @@ $('#viewercontainer').resizable({
         $("#wrapper").css("pointer-events", "none");
     },
     resize:function(event,ui){
-        myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+        if(myCodeMirror2!="")myCodeMirror2.setSize($("#viewercontainer").width(),$("#centerdiv").height()-$("#viewercontainer").height());
     }
 });
 $('#centerdiv').resizable({
@@ -140,7 +229,8 @@ $('#centerdiv').resizable({
         $("#wrapper").css("pointer-events", "none");
     },
     resize:function(event,ui){
-        myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
+        if(myCodeMirror2!="")myCodeMirror2.setSize($("#codeedit").width(),$("#centerdiv").height()-$("#viewercontainer").height());
         $("#active-border").hide();
     }
-});                   
+});
+

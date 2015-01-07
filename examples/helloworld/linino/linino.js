@@ -1,6 +1,14 @@
 
 var HIGH="HIGH";
 var LOW="LOW";
+var OUTPUT="OUTPUT";
+
+
+
+//at present this function is just a stub
+function pinMode(pin,value){
+    
+}
 
 //at present pin can only be 13
 //value "HIGH" or "LOW"

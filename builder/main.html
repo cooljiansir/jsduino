@@ -9,7 +9,15 @@
     <link rel="stylesheet" href="../lib/codemirror-4.10/lib/codemirror.css">
     <link rel="stylesheet" href="../lib/codemirror-4.10/addon/hint/show-hint.css">
 </head>
+<script type="text/javascript">
+    //win.on('error', error);
+    process.on('uncaughtException',exception);
 
+    function exception(){
+        console.log('This is an error process');
+        return false;
+   }
+</script> 
 <body>
     <div id="appcontainer">
         <div id="leftmenu">
@@ -152,6 +160,7 @@
                 <div id="jscodecontainer">
                     <div id="jscodewrapper">
             <textarea id="jscode-textarea">$(function () {
+    pinMode(13, OUTPUT);
     $("#buton").click(function () {
         digitalWrite(13, HIGH);
     });
@@ -181,7 +190,7 @@
         </div>
     </div>
 </body>
-    
+   
             <script type="text/javascript" src="../lib/jquery/jquery.js"></script>
             <script type="text/javascript" src="../lib/jqueryui/jquery-ui.js"></script>
 

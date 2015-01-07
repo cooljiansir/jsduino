@@ -119,6 +119,8 @@
         #demos{
             overflow: hidden;
             height: 100%;
+            border-top:1px solid;
+            box-sizing: border-box;
         }
         #demos #demo-up{
             margin-top: 10px;
@@ -198,6 +200,44 @@
         }
         #code-editor #file-list-div ul li.selected{
             background-color: rgba(10,100,200,0.4);
+        }
+        #code-editor #jscoderight{
+            height: 100%;
+            overflow: hidden;
+        }
+        #code-editor #jscodecontainer{
+            height: 70%;
+            border-bottom: 1px solid;
+            overflow: hidden;
+            width: 100%;
+        }
+        #code-editor #jscodewrapper{
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        #code-editor #jscodewrapper .CodeMirror{
+            width: 100%;
+            height: 100%;
+        }
+        #code-editor #jscodestatuswrapper{
+            overflow: hidden;
+            width: 100%;
+        }
+        #code-editor #jscodestatus{
+            padding: 10px 0 0 0;
+            overflow: auto;
+            height: 100%;
+            background-color: rgba(0,0,0,1);
+        }
+        #jscodestatus .row{
+            color: white;
+            padding: 3px 0 0 0;
+            cursor: default;
+        }
+        #jscodestatus .lineno{
+            float: left;
+            width: 100px;
         }
         #widgetListcontainer {
             width: 200px;

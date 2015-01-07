@@ -52,7 +52,7 @@ $("#leftmenu-edit").click(function(){
     $("#code-editor").addClass("leftselected");    
     $(".leftselected").show();
     
-    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jscode-textarea"),{
+    myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jscode-textarea"),{
         mode: 'javascript',  
         indentWithTabs: true,  
         smartIndent: true,  
@@ -60,6 +60,32 @@ $("#leftmenu-edit").click(function(){
         matchBrackets : true,  
         autofocus: true  
     });
+    JSLINT(myCodeMirror.getValue());
+    data = JSLINT.data();
+    
+    errtext = JSLINT.error_report(data);
+    //$("#jscodestatus").html(errtext);
+    retext = JSLINT.report(data);
+    protext = JSLINT.properties_report(JSLINT.property);
+    
+    $("#jscodestatus").html("");
+    for(k in data['errors']){
+        err = data['errors'][k];
+        for(t in err){
+            console.log("t "+t+" "+err[t]);
+        }
+        $("#jscodestatus").append("<div class=\"row\"><div class=\"lineno\">line "+err['line']+":</div>"+err['reason']+"</div>");
+        
+        //console.log("k "+k+" v: "+data['errors'][k]);
+    }
+    console.log("data "+data);
+    console.log("errtext "+errtext);
+    console.log("retext "+retext);
+    console.log("protext "+protext);
+    
+    $("#jscodestatus").height($("#jscoderight").height()-$("#jscodecontainer").height());
+    
+    
 });
 var myCodeMirror2="";
 function leftmenu_desgin_click(){
@@ -98,16 +124,21 @@ var gui = require('nw.gui');
 var win = gui.Window.get();
 var menubar = new gui.Menu({type: 'menubar'}); 
 var file = new gui.Menu(); 
-file.append(new gui.MenuItem({label: 'Action 1',click: function() {alert('Action 1 Clicked');}})); 
-file.append(new gui.MenuItem({label: 'Action 2',click: function() {alert('Action 2 Clicked');}}));
+file.append(new gui.MenuItem({label: 'New                            Ctr+N'})); 
+file.append(new gui.MenuItem({label: 'Open                          Ctr+O'}));
+file.append(new gui.MenuItem({label: 'Save                            Ctr+S'})); 
+file.append(new gui.MenuItem({label: 'Save All                   Ctr+Alt+S'}));
+file.append(new gui.MenuItem({label: 'Save As                 Ctr+Shift+S'})); 
+file.append(new gui.MenuItem({label: 'Exit                           Ctr+Q'}));
+
 var edit = new gui.Menu(); 
 edit.append(new gui.MenuItem({label: 'Action 1',click: function() {alert('Action 1 Clicked');}})); 
 edit.append(new gui.MenuItem({label: 'Action 2',click: function() {alert('Action 2 Clicked');}}));             
 
 menubar.append(new gui.MenuItem({ label: 'File', submenu: file}));
-menubar.append(new gui.MenuItem({ label: 'Edit', submenu: edit}));
-menubar.append(new gui.MenuItem({ label: 'Tools', submenu: file}));
-menubar.append(new gui.MenuItem({ label: 'Help', submenu: edit}));             
+menubar.append(new gui.MenuItem({ label: 'Edit'}));
+menubar.append(new gui.MenuItem({ label: 'Tools'}));
+menubar.append(new gui.MenuItem({ label: 'Help'}));             
 
 win.menu = menubar;
 
@@ -221,6 +252,14 @@ $('#centerdiv').resizable({
 $("#file-list-div").resizable({
     handles:'e'
 });
+var myCodeMirror;
+$("#jscodecontainer").resizable({
+    handles:'s',
+    resize:function(event,ui){
+        myCodeMirror.setSize($("#jscodewrapper").width(),$("#jscodewrapper").height());
+        $("#jscodestatus").height($("#jscoderight").height()-$("#jscodecontainer").height());
+    }
+});
 $("#frame").load(function(){
     var frame = $("#frame").contents();
     $(frame).find("*").click(function(){
@@ -259,4 +298,6 @@ $("#frame").load(function(){
     });
     
 });
+
 $("#file-index").click(leftmenu_desgin_click);
+$(".demo-item").click(leftmenu_desgin_click);

@@ -5,7 +5,7 @@
     "no-edit-menu" : false,
     "window": {
         "title": "Linino",
-        "toolbar": true
+        "toolbar": false
     },
     "chromium-args" : "--enable-direct-write --allow-file-access-from-files"
 }

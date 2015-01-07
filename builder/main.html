@@ -137,7 +137,6 @@
                     <div id="propertydiv">
                         <div class="row"><div class="title">id:</div><div class="input"><input id="ui-id-input" type="text" /></div></div>
                         <div class="row"><div class="title">class:</div><div class="input"><input id="ui-class-input" type="text" /></div></div>
-                        <div class="row"><div class="title">color:</div><div class="input"><div class="">●</div></div></div>
                     </div>
                 </div>
             </div>     
@@ -149,16 +148,25 @@
                     <li class="selected">index.js</li>
                 </ul>
             </div>
-            <textarea id="jscode-textarea">$(function(){
-    
-    $("#buton").click(function(){
-        digitalWrite(13,HIGH);
+            <div id="jscoderight">
+                <div id="jscodecontainer">
+                    <div id="jscodewrapper">
+            <textarea id="jscode-textarea">$(function () {
+    $("#buton").click(function () {
+        digitalWrite(13, HIGH);
     });
-    
-    $("#butoff").click(function(){
-        digitalWrite(13,LOW);
+    $("#butoff").click(function () {
+        digitalWrite(13, LOW);
     });
 });</textarea>
+                    </div>
+                </div>
+                <div id="jscodestatuswrapper">
+                    <div id="jscodestatus">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="dialogback">
@@ -185,7 +193,9 @@
             <script src="../lib/codemirror-4.10/mode/javascript/javascript.js"></script>
             <script src="../lib/codemirror-4.10/mode/css/css.js"></script>
             <script src="../lib/codemirror-4.10/mode/htmlmixed/htmlmixed.js"></script>
-    
+            <script src="../lib/JSLint/jslint.js"></script>
+
+
             <script type="text/javascript" src="js/builder.js"></script>
             <script type=text/javascript src="js/draganddrop.js"></script>
 </html>
